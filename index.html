@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+</body>
+<html lang="en">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <script src="scripts/style.css"></script>
+    <title>SWITCH</title>
+</head>
+<script src="scripts/browserMqtt.js"></script>
+<script src="scripts/controller.js"></script>
+
+<body>
+    <header>
+        <center>
+            <div class="card" style="background-color: aquamarine">
+                <h1>IOT SWITCH</h1>
+            </div>
+        </center>
+    </header>
+    <hr />
+    <hr />
+
+    <center>
+        <div id="div">
+            <h4 id="status">The device is currently turned off</h4>
+            <button id="on" class="ui primary basic button">On</button>
+            <button id="off" class="ui secondary basic button">Off</button>
+        </div>
+    </center>
+
+</body>
+<script src="scripts/browserMqtt.js"></script>
+<script src="scripts/moment.js"></script>
+<script>
+    var connect = "wss://test.mosquitto.org:8081/mqtt";
+    client = mqtt.connect(connect);
+    var on = document.getElementById('on');
+    var off = document.getElementById('off');
+
+    $(document).ready(function () {
+        $("#on").click(function (e) {
+            e.preventDefault();
+            var time = moment().format('MMMM Do YYYY, h:mm:ss a');
+            var topic = 'daine/switch/status';
+            var payload = 'Turned On: ' + time
+            client.publish(topic, payload);
+            $("#status").html("The switch is on");
+            // on.disable = true;
+            // off.disable = false;
+            
+
+        })
+
+        $("#off").click(function (e) {
+            e.preventDefault();
+            var time = moment().format('MMMM Do YYYY, h:mm:ss a');
+            var topic = 'daine/switch/status';
+            var payload = 'Turned Off: ' + time
+            client.publish(topic, payload);
+            $("#status").html("The switch is off");
+            // on.disable = false;
+            // off.disable = true;
+        })
+    })
+</script>
+
+</html>
